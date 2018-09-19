@@ -825,7 +825,7 @@ class SnGac(object):
                 fake_content_train = generator_handle.generated_target_train
                 true_label0_train = data_provider.train_iterator.output_tensor_list[2]
 
-                real_pack_train = tf.concat([true_content_train, style_train],axis=3)
+                real_pack_train = tf.concat([true_content_train, style_train], axis=3)
                 fake_pack_train = tf.concat([fake_content_train, style_train], axis=3)
 
                 real_C_logits,real_Discriminator_logits,network_info = \
@@ -1522,6 +1522,7 @@ class SnGac(object):
         training_start_time=time.time()
 
         training_epoch_list = range(ei_start,self.epoch,1)
+        self.highest_test_accuracy = -1
 
         for ei in training_epoch_list:
 
@@ -1542,9 +1543,29 @@ class SnGac(object):
                 print(self.print_separater)
                 current_lr = update_lr
 
-            self.validate_full_validation_dataset(data_provider=data_provider,
-                                                  print_interval=self.print_info_seconds/10,
-                                                  epoch_index=ei)
+            current_test_accuracy = self.validate_full_validation_dataset(data_provider=data_provider,
+                                                                          print_interval=self.print_info_seconds/10,
+                                                                          epoch_index=ei)
+
+            if ei < self.init_training_epochs or current_test_accuracy > self.highest_test_accuracy:
+
+                current_time = time.strftime('%Y-%m-%d @ %H:%M:%S', time.localtime())
+                print("Time:%s,Checkpoint:SaveCheckpoint@step:%d" % (current_time, global_step.eval(session=self.sess)))
+                self.checkpoint(saver=saver_discriminator,
+                                model_dir=os.path.join(self.checkpoint_dir, 'discriminator'),
+                                global_step=global_step)
+                self.checkpoint(saver=saver_generator,
+                                model_dir=os.path.join(self.checkpoint_dir, 'generator'),
+                                global_step=global_step)
+                self.checkpoint(saver=saver_frameworks,
+                                model_dir=os.path.join(self.checkpoint_dir, 'frameworks'),
+                                global_step=global_step)
+                print(self.print_separater)
+
+                if current_test_accuracy > self.highest_test_accuracy:
+                    self.highest_test_accuracy = current_test_accuracy
+
+
 
             for bid in range(self.itrs_for_current_epoch):
 
@@ -1660,18 +1681,8 @@ class SnGac(object):
 
             # self-increase the epoch number
             self.sess.run(epoch_step_increase_one_op)
-            current_time = time.strftime('%Y-%m-%d @ %H:%M:%S', time.localtime())
-            print("Time:%s,Checkpoint:SaveCheckpoint@step:%d" % (current_time, global_step.eval(session=self.sess)))
-            self.checkpoint(saver=saver_discriminator,
-                            model_dir=os.path.join(self.checkpoint_dir, 'discriminator'),
-                            global_step=global_step)
-            self.checkpoint(saver=saver_generator,
-                            model_dir=os.path.join(self.checkpoint_dir, 'generator'),
-                            global_step=global_step)
-            self.checkpoint(saver=saver_frameworks,
-                            model_dir=os.path.join(self.checkpoint_dir, 'frameworks'),
-                            global_step=global_step)
-            print(self.print_separater)
+
+
 
         print("Training Completed.")
 
@@ -1764,3 +1775,5 @@ class SnGac(object):
         print("Validate@Epoch:%d, FullAccuracyOnTrue/Generated:%.3f/%.3f" %
               (epoch_index, final_accuracy_true, final_accuracy_generated))
         print(self.print_separater)
+
+        return current_accuracy_generated
