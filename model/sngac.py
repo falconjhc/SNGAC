@@ -141,7 +141,6 @@ class SnGac(object):
         self.discriminator_initialization_iters=25
         self.init_training_epochs=init_training_epochs
         self.final_training_epochs=final_training_epochs
-        self.final_training_epochs=final_training_epochs
         self.model_save_epochs=3
         self.debug_mode = debug_mode
         self.experiment_dir = experiment_dir
@@ -1523,6 +1522,7 @@ class SnGac(object):
 
         training_epoch_list = range(ei_start,self.epoch,1)
         self.highest_test_accuracy = -1
+        self.highest_test_accuracy_epoch = -1
 
         for ei in training_epoch_list:
 
@@ -1547,7 +1547,7 @@ class SnGac(object):
                                                                           print_interval=self.print_info_seconds/10,
                                                                           epoch_index=ei)
 
-            if ei < self.init_training_epochs or current_test_accuracy > self.highest_test_accuracy:
+            if ei < self.final_training_epochs or current_test_accuracy > self.highest_test_accuracy:
 
                 current_time = time.strftime('%Y-%m-%d @ %H:%M:%S', time.localtime())
                 print("Time:%s,Checkpoint:SaveCheckpoint@step:%d" % (current_time, global_step.eval(session=self.sess)))
@@ -1562,14 +1562,15 @@ class SnGac(object):
                                 global_step=global_step)
                 print(self.print_separater)
 
-                if current_test_accuracy > self.highest_test_accuracy:
+                if current_test_accuracy > self.highest_test_accuracy and ei > self.init_training_epochs + 3:
                     self.highest_test_accuracy = current_test_accuracy
+                    self.highest_test_accuracy_epoch = ei
 
 
 
             for bid in range(self.itrs_for_current_epoch):
 
-                if time.time() - training_start_time <= 600:
+                if time.time() - training_start_time < 600:
                     summary_seconds = 60
                     sample_seconds = 60
                     print_info_seconds = 60
@@ -1621,10 +1622,9 @@ class SnGac(object):
                         hrs_estimated_remaining / 24))
                     print("CriticPenalty:%.5f/%.3f;" % (current_critic_logit_penalty_value,
                                                         self.Discriminative_Penalty))
-
-
-
                     print("TrainingInfo:%s" % info)
+                    print("CurrentHighestGeneratedTestAccuracy:%.3f @ Epoch:%d" %
+                          (self.highest_test_accuracy, self.highest_test_accuracy_epoch))
                     print(self.print_separater)
 
                 if time.time()-record_start>record_seconds or global_step.eval(session=self.sess)==global_step_start+1:
@@ -1656,7 +1656,7 @@ class SnGac(object):
                     summary_writer.flush()
 
 
-                if time.time()-sample_start>sample_seconds or global_step.eval(session=self.sess)==global_step_start or bid==self.itrs_for_current_epoch-1:
+                if time.time()-sample_start>sample_seconds or global_step.eval(session=self.sess)==global_step_start+1 or bid==self.itrs_for_current_epoch-1:
                     sample_start = time.time()
 
                     # check for train set

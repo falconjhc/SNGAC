@@ -24,7 +24,7 @@ exp_root_path = '/DataA/Harric/ChineseCharacterExp/'
 input_args = [
               '--debug_mode','0',
               '--init_training_epochs','3',
-              '--final_training_epochs','250',
+              '--final_training_epochs','1000',
 
               '--generator_device','/device:GPU:0',
               '--discriminator_device', '/device:GPU:0',
