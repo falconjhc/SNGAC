@@ -1259,6 +1259,7 @@ class SnGac(object):
 
 
             # define the data set
+            print(self.print_separater)
             data_provider = DataProvider(batch_size=self.batch_size,
                                          info_print_interval=self.print_info_seconds / 10,
                                          input_width=self.source_img_width,
@@ -1523,6 +1524,8 @@ class SnGac(object):
         training_epoch_list = range(ei_start,self.epoch,1)
         self.highest_test_accuracy = -1
         self.highest_test_accuracy_epoch = -1
+        self.highest_test_accuracy_info_line1 = ''
+        self.highest_test_accuracy_info_line2 = ''
 
         for ei in training_epoch_list:
 
@@ -1543,9 +1546,10 @@ class SnGac(object):
                 print(self.print_separater)
                 current_lr = update_lr
 
-            current_test_accuracy = self.validate_full_validation_dataset(data_provider=data_provider,
-                                                                          print_interval=self.print_info_seconds/10,
-                                                                          epoch_index=ei)
+            current_test_accuracy, current_top_k_test_accuracy\
+                = self.validate_full_validation_dataset(data_provider=data_provider,
+                                                        print_interval=self.print_info_seconds/10,
+                                                        epoch_index=ei)
 
             if ei < self.final_training_epochs or current_test_accuracy > self.highest_test_accuracy:
 
@@ -1562,9 +1566,26 @@ class SnGac(object):
                                 global_step=global_step)
                 print(self.print_separater)
 
-                if current_test_accuracy > self.highest_test_accuracy and ei > self.init_training_epochs + 3:
+                if (current_test_accuracy > self.highest_test_accuracy and ei > self.init_training_epochs + 3) or self.debug_mode == 1:
                     self.highest_test_accuracy = current_test_accuracy
                     self.highest_test_accuracy_epoch = ei
+                    self.highest_test_accuracy_info_line1 = "CurrentHighestGeneratedTestAccuracy:%.3f @ Epoch:%d" %\
+                                                            (self.highest_test_accuracy, self.highest_test_accuracy_epoch)
+
+                    line2 = "GeneratedTopK @: "
+                    for ii in self.accuracy_k:
+                        if not ii == self.accuracy_k[len(self.accuracy_k) - 1]:
+                            line2 = line2 + '%d/' % ii
+                        else:
+                            line2 = line2 + '%d:' % ii
+                    tmp_counter = 0
+                    for ii in current_top_k_test_accuracy:
+                        if not tmp_counter == len(current_top_k_test_accuracy) - 1:
+                            line2 = line2 + '%.3f/' % ii
+                        else:
+                            line2 = line2 + '%.3f;' % ii
+                        tmp_counter += 1
+                    self.highest_test_accuracy_info_line2 = line2
 
 
 
@@ -1611,7 +1632,8 @@ class SnGac(object):
 
                     print("ItrDuration:%.2fses,FullDuration:%.2fhrs(%.2fdays);" %
                           (passed_itr, passed_full / 3600, passed_full / (3600 * 24)))
-
+                    print(self.highest_test_accuracy_info_line1)
+                    print(self.highest_test_accuracy_info_line2)
 
                     percentage_completed = float(global_step.eval(session=self.sess)) / float((self.epoch - ei_start) * self.itrs_for_current_epoch) * 100
                     percentage_to_be_fulfilled = 100 - percentage_completed
@@ -1623,8 +1645,7 @@ class SnGac(object):
                     print("CriticPenalty:%.5f/%.3f;" % (current_critic_logit_penalty_value,
                                                         self.Discriminative_Penalty))
                     print("TrainingInfo:%s" % info)
-                    print("CurrentHighestGeneratedTestAccuracy:%.3f @ Epoch:%d" %
-                          (self.highest_test_accuracy, self.highest_test_accuracy_epoch))
+
                     print(self.print_separater)
 
                 if time.time()-record_start>record_seconds or global_step.eval(session=self.sess)==global_step_start+1:
@@ -1682,41 +1703,56 @@ class SnGac(object):
             # self-increase the epoch number
             self.sess.run(epoch_step_increase_one_op)
 
-
-
         print("Training Completed.")
 
 
     def validate_full_validation_dataset(self,
                                          data_provider, print_interval,epoch_index):
-        # def top_k_accuracy(logits, true_label, label_vec, k):
-        #     top_k_indices = np.argsort(-logits, axis=1)[:, 0:k]
-        #     for ii in range(k):
-        #         estm_label = label_vec[top_k_indices[:, ii]]
-        #         diff = np.abs(estm_label - true_label)
-        #         if ii == 0:
-        #             full_diff = np.reshape(diff, [diff.shape[0], 1])
-        #         else:
-        #             full_diff = np.concatenate([full_diff, np.reshape(diff, [diff.shape[0], 1])], axis=1)
-        #     top_k_accuracy_list = list()
-        #     for ii in range(len(self.accuracy_k)):
-        #         this_k = self.accuracy_k[ii]
-        #         this_k_diff = full_diff[:, 0:this_k]
-        #         if this_k == 0:
-        #             this_k_diff = np.reshape(this_k_diff, [this_k_diff.shape[0], 1])
-        #         min_v = np.min(this_k_diff, axis=1)
-        #         correct = [i for i, v in enumerate(min_v) if v == 0]
-        #         accuracy = float(len(correct)) / float(len(true_label)) * 100
-        #         top_k_accuracy_list.append(accuracy)
-        #     return top_k_accuracy_list
+
+        def top_k_correct_calculation(logits, true_label):
+            k = len(self.accuracy_k)
+            top_k_indices = np.argsort(-logits, axis=1)[:, 0:k]
+            for ii in range(k):
+                estm_label = top_k_indices[:, ii]
+                diff = np.abs(estm_label - true_label)
+                if ii == 0:
+                    full_diff = np.reshape(diff, [diff.shape[0], 1])
+                else:
+                    full_diff = np.concatenate([full_diff, np.reshape(diff, [diff.shape[0], 1])], axis=1)
+            top_k_correct_list = list()
+            for ii in range(len(self.accuracy_k)):
+                this_k = self.accuracy_k[ii]
+                this_k_diff = full_diff[:, 0:this_k]
+                if this_k == 0:
+                    this_k_diff = np.reshape(this_k_diff, [this_k_diff.shape[0], 1])
+                min_v = np.min(this_k_diff, axis=1)
+                correct = [i for i, v in enumerate(min_v) if v == 0]
+                top_k_correct_list.append(len(correct))
+            return top_k_correct_list
 
 
         iter_num = len(data_provider.validate_iterator.data_content_path_list) / self.batch_size + 1
         full_generated_correct = 0
         full_true_correct = 0
         full_counter = 0
+        full_generated_top_k_correct_list = list()
+        full_true_top_k_correct_list = list()
+        current_generated_top_k_accuracy_list = list()
+        current_true_top_k_accuracy_list = list()
+        final_generated_top_k_accuracy_list = list()
+        final_true_top_k_accuracy_list = list()
+        for ii in range(len(self.accuracy_k)):
+            full_generated_top_k_correct_list.append(0)
+            full_true_top_k_correct_list.append(0)
+            current_generated_top_k_accuracy_list.append(-1)
+            current_true_top_k_accuracy_list.append(-1)
+            final_generated_top_k_accuracy_list.append(-1)
+            final_true_top_k_accuracy_list.append(-1)
+
         timer_start = time.time()
         for curt_iter in range(iter_num):
+
+
             generated_content_batch, \
             true_content_batch, style_batch, \
             training_img_list, \
@@ -1735,17 +1771,20 @@ class SnGac(object):
             generated_estm_label = np.argmax(generated_categorical_logits, axis=1)
             true_estm_label = np.argmax(true_categorical_logits, axis=1)
             true_label = np.argmax(label0_onehot, axis=1)
-
-            generated_diff = generated_estm_label - true_label
-            true_diff = true_estm_label - true_label
-
-
             if curt_iter == iter_num - 1:
                 add_num = iter_num * self.batch_size - len(data_provider.validate_iterator.data_content_path_list)
                 remain_num = self.batch_size - add_num
-                generated_diff = generated_diff[0:remain_num]
-                true_diff = true_diff[0:remain_num]
+                generated_estm_label = generated_estm_label[0:remain_num]
+                true_estm_label = true_estm_label[0:remain_num]
+                true_label = true_label[0:remain_num]
 
+            if curt_iter == iter_num - 1:
+                full_counter+=remain_num
+            else:
+                full_counter+=self.batch_size
+
+            generated_diff = generated_estm_label - true_label
+            true_diff = true_estm_label - true_label
 
             current_generated_correct = [i for i, v in enumerate(generated_diff) if v == 0]
             current_true_correct = [i for i, v in enumerate(true_diff) if v == 0]
@@ -1754,13 +1793,30 @@ class SnGac(object):
 
             full_generated_correct+=current_generated_correct
             full_true_correct+=current_true_correct
-            if curt_iter == iter_num - 1:
-                full_counter+=remain_num
-            else:
-                full_counter+=self.batch_size
 
+            current_generated_top_k_correct_list = top_k_correct_calculation(logits=generated_categorical_logits,
+                                                                             true_label=true_label)
+            current_true_top_k_correct_list = top_k_correct_calculation(logits=true_categorical_logits,
+                                                                        true_label=true_label)
             current_accuracy_generated = np.float32(full_generated_correct) / np.float32(full_counter) * 100
             current_accuracy_true = np.float32(full_true_correct) / np.float32(full_counter) * 100
+
+            for ii in range(len(self.accuracy_k)):
+                full_generated_top_k_correct_list[ii] += current_generated_top_k_correct_list[ii]
+                full_true_top_k_correct_list[ii] += current_true_top_k_correct_list[ii]
+                current_generated_top_k_accuracy_list[ii] = np.float32(full_generated_top_k_correct_list[ii]) / np.float32(full_counter) * 100
+                current_true_top_k_accuracy_list[ii] = np.float32(full_true_top_k_correct_list[ii]) / np.float32(full_counter) * 100
+
+
+
+
+
+
+
+
+
+
+
 
 
             if time.time() - timer_start > print_interval or curt_iter==0 or curt_iter==iter_num-1:
@@ -1769,11 +1825,78 @@ class SnGac(object):
                       (epoch_index,
                        current_accuracy_true,current_accuracy_generated,
                        full_counter,len(data_provider.validate_iterator.data_content_path_list)))
+                print("Top_K_Accuracies_ForGenerated:")
+                print("@", end='')
+                for ii in self.accuracy_k:
+                    if not ii == self.accuracy_k[len(self.accuracy_k)-1]:
+                        print('%d/' % ii, end='')
+                    else:
+                        print('%d:' % ii, end='')
+                tmp_counter=0
+                for ii in current_generated_top_k_accuracy_list:
+                    if not tmp_counter == len(current_generated_top_k_accuracy_list)-1:
+                        print('%.3f/' % ii, end='')
+                    else:
+                        print('%.3f;' % ii)
+                    tmp_counter+=1
+                print("Top_K_Accuracies_ForTrue:")
+                print("@", end='')
+                for ii in self.accuracy_k:
+                    if not ii == self.accuracy_k[len(self.accuracy_k) - 1]:
+                        print('%d/' % ii, end='')
+                    else:
+                        print('%d:' % ii, end='')
+                tmp_counter=0
+                for ii in current_true_top_k_accuracy_list:
+                    if not tmp_counter == len(current_generated_top_k_accuracy_list) - 1:
+                        print('%.3f/' % ii, end='')
+                    else:
+                        print('%.3f;' % ii)
+                    tmp_counter += 1
+                print(self.print_separater)
 
         final_accuracy_generated = np.float32(full_generated_correct) / np.float32(len(data_provider.validate_iterator.data_content_path_list)) * 100
         final_accuracy_true = np.float32(full_true_correct) / np.float32(len(data_provider.validate_iterator.data_content_path_list)) * 100
+        for ii in range(len(self.accuracy_k)):
+            final_generated_top_k_accuracy_list[ii] = np.float32(full_generated_top_k_correct_list[ii]) / np.float32(len(data_provider.validate_iterator.data_content_path_list))  * 100
+            final_true_top_k_accuracy_list[ii] = np.float32(full_true_top_k_correct_list[ii]) / np.float32(len(data_provider.validate_iterator.data_content_path_list))  * 100
+
+        print(self.print_separater)
+        print(self.print_separater)
+        print(self.print_separater)
         print("Validate@Epoch:%d, FullAccuracyOnTrue/Generated:%.3f/%.3f" %
               (epoch_index, final_accuracy_true, final_accuracy_generated))
+        print("Top_K_Accuracies_ForGenerated:")
+        print("@", end='')
+        for ii in self.accuracy_k:
+            if not ii == self.accuracy_k[len(self.accuracy_k) - 1]:
+                print('%d/' % ii, end='')
+            else:
+                print('%d:' % ii, end='')
+        tmp_counter = 0
+        for ii in final_generated_top_k_accuracy_list:
+            if not tmp_counter == len(final_generated_top_k_accuracy_list) - 1:
+                print('%.3f/' % ii, end='')
+            else:
+                print('%.3f;' % ii)
+            tmp_counter += 1
+        print("Top_K_Accuracies_ForTrue:")
+        print("@", end='')
+        for ii in self.accuracy_k:
+            if not ii == self.accuracy_k[len(self.accuracy_k) - 1]:
+                print('%d/' % ii, end='')
+            else:
+                print('%d:' % ii, end='')
+        tmp_counter = 0
+        for ii in final_true_top_k_accuracy_list:
+            if not tmp_counter == len(final_true_top_k_accuracy_list) - 1:
+                print('%.3f/' % ii, end='')
+            else:
+                print('%.3f;' % ii)
+            tmp_counter += 1
+        print(self.print_separater)
+        print(self.print_separater)
         print(self.print_separater)
 
-        return current_accuracy_generated
+
+        return final_accuracy_generated, final_generated_top_k_accuracy_list
