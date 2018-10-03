@@ -1768,15 +1768,23 @@ class SnGac(object):
                 self.discriminate_sample(content_infer_batch=true_content_batch,
                                          style_infer_batch=style_batch)
 
-            generated_estm_label = np.argmax(generated_categorical_logits, axis=1)
-            true_estm_label = np.argmax(true_categorical_logits, axis=1)
-            true_label = np.argmax(label0_onehot, axis=1)
+
             if curt_iter == iter_num - 1:
                 add_num = iter_num * self.batch_size - len(data_provider.validate_iterator.data_content_path_list)
                 remain_num = self.batch_size - add_num
-                generated_estm_label = generated_estm_label[0:remain_num]
-                true_estm_label = true_estm_label[0:remain_num]
-                true_label = true_label[0:remain_num]
+                generated_categorical_logits = generated_categorical_logits[0:remain_num,:]
+                true_categorical_logits = true_categorical_logits[0:remain_num, :]
+                label0_onehot = label0_onehot[0:remain_num, :]
+
+            generated_estm_label = np.argmax(generated_categorical_logits, axis=1)
+            true_estm_label = np.argmax(true_categorical_logits, axis=1)
+            true_label = np.argmax(label0_onehot, axis=1)
+            # if curt_iter == iter_num - 1:
+            #     add_num = iter_num * self.batch_size - len(data_provider.validate_iterator.data_content_path_list)
+            #     remain_num = self.batch_size - add_num
+            #     generated_estm_label = generated_estm_label[0:remain_num]
+            #     true_estm_label = true_estm_label[0:remain_num]
+            #     true_label = true_label[0:remain_num]
 
             if curt_iter == iter_num - 1:
                 full_counter+=remain_num
@@ -1806,17 +1814,6 @@ class SnGac(object):
                 full_true_top_k_correct_list[ii] += current_true_top_k_correct_list[ii]
                 current_generated_top_k_accuracy_list[ii] = np.float32(full_generated_top_k_correct_list[ii]) / np.float32(full_counter) * 100
                 current_true_top_k_accuracy_list[ii] = np.float32(full_true_top_k_correct_list[ii]) / np.float32(full_counter) * 100
-
-
-
-
-
-
-
-
-
-
-
 
 
             if time.time() - timer_start > print_interval or curt_iter==0 or curt_iter==iter_num-1:
