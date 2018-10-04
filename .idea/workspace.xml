@@ -4,7 +4,6 @@
     <list default="true" id="d068e1ae-a1f2-4436-bb4f-7ed5677d49e5" name="Default Changelist" comment="20180918 modify validate and model save pipeline">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dataset/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataset/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/sngac.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/sngac.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,7 +12,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/SNGAC$sngac_debug.coverage" NAME="sngac_debug Coverage Results" MODIFIED="1538558090594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DebugScripts" />
+    <SUITE FILE_PATH="coverage/SNGAC$sngac_debug.coverage" NAME="sngac_debug Coverage Results" MODIFIED="1538631523066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DebugScripts" />
     <SUITE FILE_PATH="coverage/SNGAC$HW100.coverage" NAME="HW100 Coverage Results" MODIFIED="1537338664724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TrainingScripts" />
   </component>
   <component name="FUSProjectUsageTrigger">
@@ -39,37 +38,37 @@
     <session id="855328728">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="7" />
-          <entry key="project.open.time.0" value="1" />
+          <entry key="project.closed" value="10" />
+          <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.2" value="2" />
-          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.5" value="3" />
-          <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.open.time.6" value="2" />
+          <entry key="project.opened" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="26" />
+          <entry key="py" value="33" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="26" />
+          <entry key="Python" value="33" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Python Console" value="114" />
-          <entry key="py" value="2038" />
+          <entry key="Python Console" value="120" />
+          <entry key="py" value="2431" />
           <entry key="txt" value="52" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="52" />
-          <entry key="Python" value="2152" />
+          <entry key="Python" value="2551" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -77,43 +76,53 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.36404932">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/DebugScripts/sngac_debug.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="85">
-                  <caret line="33" column="35" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/dataset/dataset.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="215">
-                  <caret line="264" column="42" selection-start-line="264" selection-start-column="12" selection-end-line="264" selection-end-column="42" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/model/sngac.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="181">
-                  <caret line="1471" column="77" lean-forward="true" selection-start-line="1468" selection-start-column="14" selection-end-line="1471" selection-end-column="77" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dataset/dataset.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="444">
+              <caret line="277" lean-forward="true" selection-start-line="277" selection-end-line="277" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/sngac.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="127">
+              <caret line="1273" selection-start-line="1273" selection-end-line="1273" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DebugScripts/sngac_debug.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="539">
+              <caret line="293" selection-start-line="293" selection-end-line="293" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.conda/envs/tensorflow_py27/lib/python2.7/site-packages/tensorflow/python/platform/app.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="521">
+              <caret line="124" selection-start-line="124" selection-end-line="124" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.conda/envs/tensorflow_py27/lib/python2.7/site-packages/tensorflow/python/framework/ops.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="1591" selection-start-line="1591" selection-end-line="1591" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -158,8 +167,8 @@
         <option value="$PROJECT_DIR$/DebugScripts/sngac_debug.py" />
         <option value="$PROJECT_DIR$/TrainingScripts/HW100.py" />
         <option value="$PROJECT_DIR$/TrainingScripts/HW300.py" />
-        <option value="$PROJECT_DIR$/dataset/dataset.py" />
         <option value="$PROJECT_DIR$/model/sngac.py" />
+        <option value="$PROJECT_DIR$/dataset/dataset.py" />
       </list>
     </option>
   </component>
@@ -200,6 +209,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -231,12 +241,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../W-Net" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -333,13 +342,13 @@
     <frame x="1280" y="-2" width="1920" height="1082" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.17769477" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17769477" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.25458467" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.36677453" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -348,7 +357,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" visible="true" weight="0.201726" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" visible="true" weight="0.4368932" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -425,24 +434,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DebugScripts/sngac_debug.py">
+    <entry file="file://$USER_HOME$/.conda/envs/tensorflow_py27/lib/python2.7/site-packages/tensorflow/python/framework/ops.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="33" column="35" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
+        <state relative-caret-position="221">
+          <caret line="1591" selection-start-line="1591" selection-end-line="1591" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/model/sngac.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="1471" column="77" lean-forward="true" selection-start-line="1468" selection-start-column="14" selection-end-line="1471" selection-end-column="77" />
+        <state relative-caret-position="127">
+          <caret line="1273" selection-start-line="1273" selection-end-line="1273" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.conda/envs/tensorflow_py27/lib/python2.7/site-packages/tensorflow/python/platform/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="521">
+          <caret line="124" selection-start-line="124" selection-end-line="124" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DebugScripts/sngac_debug.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="539">
+          <caret line="293" selection-start-line="293" selection-end-line="293" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dataset/dataset.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="264" column="42" selection-start-line="264" selection-start-column="12" selection-end-line="264" selection-end-column="42" />
+        <state relative-caret-position="444">
+          <caret line="277" lean-forward="true" selection-start-line="277" selection-end-line="277" />
         </state>
       </provider>
     </entry>
