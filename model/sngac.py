@@ -970,7 +970,7 @@ class SnGac(object):
 
             if self.training_mode == 'GeneratorInit':
                 category_loss = (real_category_loss + fake_category_loss) / 2.0
-            elif self.training_mode == 'DiscriminatorInit':
+            elif self.training_mode == 'DiscriminatorFineTune':
                 category_loss = fake_category_loss + real_category_loss * eps
 
 

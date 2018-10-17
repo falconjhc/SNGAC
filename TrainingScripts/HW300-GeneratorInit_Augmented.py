@@ -30,7 +30,7 @@ exp_root_path = '/DataA/Harric/ChineseCharacterExp/'
 input_args = [
               '--debug_mode','0',
               '--training_mode','GeneratorInit',
-              '--init_training_epochs','3',
+              '--init_training_epochs','1',
               '--final_training_epochs','1000',
 
               '--generator_device','/device:GPU:0',
@@ -74,7 +74,7 @@ input_args = [
               '--channels','1',
 
               # optimizer parameters
-              '--init_lr','0.005',
+              '--init_lr','0.003',
               '--epoch','3000',
               '--resume_training','0', # 0: training from scratch; 1: training from a pre-trained point
 
