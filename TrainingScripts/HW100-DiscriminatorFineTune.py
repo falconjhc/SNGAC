@@ -20,10 +20,16 @@ exp_root_path = '/DataA/Harric/ChineseCharacterExp/'
 
 # OPTIONS SPECIFICATION
 # resume_training = 0: training from stratch
-#                   1: training from a based model
-input_args = [
+#                   1: resume training from a previous trained model with identical parameter setting
+
+
+# training_mode = 'GeneratorInit';
+#                 'DiscriminatorFineTune';
+input_args = ['--training_from_model_dir',
+              '../../Exp_SNGAC/checkpoint/Exp20180918_SNGAC_StyleHw100-GeneratorInit-GenEncDec6-Res5@Lyr3_DisMdy6conv/',
               '--debug_mode','0',
-              '--init_training_epochs','3',
+              '--training_mode','DiscriminatorFineTune',
+              '--init_training_epochs','1',
               '--final_training_epochs','1000',
 
               '--generator_device','/device:GPU:0',
@@ -31,20 +37,20 @@ input_args = [
               '--style_embedder_device','/device:GPU:0',
 
 
-              '--train_data_augment','1', # translation? rotation?
-              '--experiment_id','20180918_SNGAC_StyleHw100',# experiment name prefix
+              '--train_data_augment','0', # translation? rotation?
+              '--experiment_id','20181017_SNGAC_StyleHw100',# experiment name prefix
               '--experiment_dir','../../Exp_SNGAC', # model saving location
               '--log_dir','tfLogs_SNGAC/',# log file saving location
               '--print_info_seconds','900',
 
               '--content_data_dir', # standard data location
-    'CASIA_64_Dataset/StandardChars/GB2312_L1/',
+    'CASIA_Dataset/StandardChars/GB2312_L1/',
 
               '--style_train_data_dir', # training data location
-    'CASIA_64_Dataset/HandWritingData/CASIA-HWDB1.1/',
+    'CASIA_Dataset/HandWritingData_240Binarized/CASIA-HWDB1.1/',
 
               '--style_validation_data_dir',# validation data location
-    'CASIA_64_Dataset/HandWritingData/CASIA-HWDB2.1/',
+    'CASIA_Dataset/HandWritingData_240Binarized/CASIA-HWDB2.1/',
 
               '--file_list_txt_content', # file list of the standard data
     '../FileList/StandardChars/Char_0_3754_GB2312L1.txt',
@@ -67,9 +73,9 @@ input_args = [
               '--channels','1',
 
               # optimizer parameters
-              '--init_lr','0.001',
+              '--init_lr','0.0005',
               '--epoch','3000',
-              '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
+              '--resume_training','0', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
               '--final_learning_rate_pctg','0.01',
@@ -93,6 +99,7 @@ input_args = [
 
 parser = argparse.ArgumentParser(description='Train')
 parser.add_argument('--debug_mode', dest='debug_mode',type=int,required=True)
+parser.add_argument('--training_mode', dest='training_mode',type=str,required=True)
 parser.add_argument('--resume_training', dest='resume_training', type=int,required=True)
 parser.add_argument('--train_data_augment', dest='train_data_augment', type=int,required=True)
 parser.add_argument('--print_info_seconds', dest='print_info_seconds',type=int,required=True)
@@ -240,6 +247,7 @@ def main(_):
         style_validation_data_dir[ii] = os.path.join(exp_root_path, style_validation_data_dir[ii])
 
     model = SNGAC(debug_mode=args.debug_mode,
+                  training_mode=args.training_mode,
                   print_info_seconds=args.print_info_seconds,
                   experiment_dir=args.experiment_dir, experiment_id=args.experiment_id,
                   log_dir=os.path.join(exp_root_path, args.log_dir),

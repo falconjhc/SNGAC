@@ -77,6 +77,7 @@ class SnGac(object):
     # constructor
     def __init__(self,
                  debug_mode=-1,
+                 training_mode = '',
                  print_info_seconds=-1,
                  train_data_augment=-1,
                  init_training_epochs=-1,
@@ -143,6 +144,7 @@ class SnGac(object):
         self.final_training_epochs=final_training_epochs
         self.model_save_epochs=3
         self.debug_mode = debug_mode
+        self.training_mode = training_mode
         self.experiment_dir = experiment_dir
         self.log_dir=log_dir
         self.experiment_id = experiment_id
@@ -180,6 +182,8 @@ class SnGac(object):
         self.Pixel_Reconstruction_Penalty = Pixel_Reconstruction_Penalty + eps
         self.Lconst_style_Penalty = Lconst_style_Penalty + eps
         self.lr = lr
+        # if self.training_mode == 'DiscriminatorFineTune':
+        #     self.lr = self.lr / 2
 
 
         self.Discriminator_Categorical_Penalty = Discriminator_Categorical_Penalty + eps
@@ -224,9 +228,25 @@ class SnGac(object):
         self.known_style_img_path=known_style_img_path
 
 
+
+
+
         # init all the directories
         self.sess = None
         self.print_separater = "#################################################################"
+
+
+        if self.training_from_model==None and self.training_mode == 'DiscriminatorFineTune':
+            print(self.print_separater)
+            print(self.print_separater)
+            print(self.print_separater)
+            print(self.print_separater)
+            print("ERROR!!! FineTune Discriminator without loaded initial model!!!")
+            print(self.print_separater)
+            print(self.print_separater)
+            print(self.print_separater)
+            print(self.print_separater)
+            return
 
     def find_bn_avg_var(self,var_list):
         var_list_new = list()
@@ -267,12 +287,25 @@ class SnGac(object):
         return var_output
 
     def get_model_id_and_dir_for_train(self):
+        if (not self.training_mode == 'DiscriminatorFineTune') and (not self.training_mode == 'GeneratorInit'):
+            print(self.print_separater)
+            print(self.print_separater)
+            print(self.print_separater)
+            print(self.print_separater)
+            print("TrainingMode Setting Error:%s" % self.training_mode)
+            print(self.print_separater)
+            print(self.print_separater)
+            print(self.print_separater)
+            print(self.print_separater)
+            return
         encoder_decoder_layer_num = int(np.floor(math.log(self.img2img_width) / math.log(2)))
-        model_id = "Exp%s_GenEncDec%d-Res%d@Lyr%d_%s" % (self.experiment_id,
-                                                         encoder_decoder_layer_num,
-                                                         self.generator_residual_blocks,
-                                                         self.generator_residual_at_layer,
-                                                         self.discriminator)
+        model_id = "Exp%s-%s-GenEncDec%d-Res%d@Lyr%d_%s" % \
+                   (self.experiment_id,
+                    self.training_mode,
+                    encoder_decoder_layer_num,
+                    self.generator_residual_blocks,
+                    self.generator_residual_at_layer,
+                    self.discriminator)
 
 
 
@@ -458,7 +491,7 @@ class SnGac(object):
                                                                             merged_disp.shape[2]))})
         summary_writer.add_summary(summray_img, global_step.eval(session=self.sess))
 
-        if self.debug_mode==1 or ((self.debug_mode==0) and global_step.eval(session=self.sess)>=2500):
+        if self.debug_mode==1 or ((self.debug_mode==0) and (global_step.eval(session=self.sess)>=2500) or self.training_mode == 'FineTuneDiscriminator'):
             summary_writer.add_summary(summary_real_output, global_step.eval(session=self.sess))
             summary_writer.add_summary(summary_fake_output, global_step.eval(session=self.sess))
 
@@ -543,7 +576,7 @@ class SnGac(object):
             with tf.variable_scope(tf.get_variable_scope()):
                 with tf.device(self.style_embedder_device):
 
-
+		    #print(data_provider.train_iterator.output_tensor_list[1].shape)
                     train_label1_logits, train_label0_logits, network_info = \
                         feature_ebddactor_network(image=data_provider.train_iterator.output_tensor_list[1],
                                                   batch_size=self.batch_size,
@@ -954,62 +987,63 @@ class SnGac(object):
 
 
         # discriminative loss
-        if self.Discriminative_Penalty > 10 * eps:
-            d_loss_real = real_Discriminator_logits
-            d_loss_fake = -fake_Discriminator_logits
+        if self.training_mode == 'GeneratorInit':
+            if self.Discriminative_Penalty > 10 * eps:
+                d_loss_real = real_Discriminator_logits
+                d_loss_fake = -fake_Discriminator_logits
 
-            d_norm_real_loss = tf.abs(tf.abs(d_loss_real) - 1)
-            d_norm_fake_loss = tf.abs(tf.abs(d_loss_fake) - 1)
+                d_norm_real_loss = tf.abs(tf.abs(d_loss_real) - 1)
+                d_norm_fake_loss = tf.abs(tf.abs(d_loss_fake) - 1)
 
-            d_norm_real_loss = tf.reduce_mean(d_norm_real_loss) * current_critic_logit_penalty
-            d_norm_fake_loss = tf.reduce_mean(d_norm_fake_loss) * current_critic_logit_penalty
-            d_norm_loss = (d_norm_real_loss + d_norm_fake_loss) / 2
+                d_norm_real_loss = tf.reduce_mean(d_norm_real_loss) * current_critic_logit_penalty
+                d_norm_fake_loss = tf.reduce_mean(d_norm_fake_loss) * current_critic_logit_penalty
+                d_norm_loss = (d_norm_real_loss + d_norm_fake_loss) / 2
 
-            d_norm_real_loss_summary = tf.summary.scalar("Loss_Discriminator/CriticLogit_NormReal",
-                                                         d_norm_real_loss / current_critic_logit_penalty)
-            d_norm_fake_loss_summary = tf.summary.scalar("Loss_Discriminator/CriticLogit_NormFake",
-                                                         d_norm_fake_loss / current_critic_logit_penalty)
-            d_norm_loss_summary = tf.summary.scalar("Loss_Discriminator/CriticLogit_Norm", d_norm_loss / current_critic_logit_penalty)
+                d_norm_real_loss_summary = tf.summary.scalar("Loss_Discriminator/CriticLogit_NormReal",
+                                                             d_norm_real_loss / current_critic_logit_penalty)
+                d_norm_fake_loss_summary = tf.summary.scalar("Loss_Discriminator/CriticLogit_NormFake",
+                                                             d_norm_fake_loss / current_critic_logit_penalty)
+                d_norm_loss_summary = tf.summary.scalar("Loss_Discriminator/CriticLogit_Norm", d_norm_loss / current_critic_logit_penalty)
 
-            d_loss += d_norm_loss
-            d_merged_summary = tf.summary.merge([d_merged_summary,
-                                                 d_norm_real_loss_summary,
-                                                 d_norm_fake_loss_summary,
-                                                 d_norm_loss_summary])
-
-            d_loss_real = tf.reduce_mean(d_loss_real) * self.Discriminative_Penalty
-            d_loss_fake = tf.reduce_mean(d_loss_fake) * self.Discriminative_Penalty
-            d_loss_real_fake_summary = tf.summary.scalar("TrainingProgress_DiscriminatorRealFakeLoss",
-                                                         tf.abs(
-                                                             d_loss_real + d_loss_fake) / self.Discriminative_Penalty)
-            if self.Discriminator_Gradient_Penalty > 10 * eps:
-                d_gradient_loss = discriminator_slopes
-                d_gradient_loss = tf.reduce_mean(d_gradient_loss) * self.Discriminator_Gradient_Penalty
-                d_gradient_loss_summary = tf.summary.scalar("Loss_Discriminator/D_Gradient",
-                                                            tf.abs(
-                                                                d_gradient_loss) / self.Discriminator_Gradient_Penalty)
-                d_loss += d_gradient_loss
+                d_loss += d_norm_loss
                 d_merged_summary = tf.summary.merge([d_merged_summary,
-                                                     d_gradient_loss_summary,
-                                                     d_loss_real_fake_summary])
+                                                     d_norm_real_loss_summary,
+                                                     d_norm_fake_loss_summary,
+                                                     d_norm_loss_summary])
 
-            cheat_loss = fake_Discriminator_logits
+                d_loss_real = tf.reduce_mean(d_loss_real) * self.Discriminative_Penalty
+                d_loss_fake = tf.reduce_mean(d_loss_fake) * self.Discriminative_Penalty
+                d_loss_real_fake_summary = tf.summary.scalar("TrainingProgress_DiscriminatorRealFakeLoss",
+                                                             tf.abs(
+                                                                 d_loss_real + d_loss_fake) / self.Discriminative_Penalty)
+                if self.Discriminator_Gradient_Penalty > 10 * eps:
+                    d_gradient_loss = discriminator_slopes
+                    d_gradient_loss = tf.reduce_mean(d_gradient_loss) * self.Discriminator_Gradient_Penalty
+                    d_gradient_loss_summary = tf.summary.scalar("Loss_Discriminator/D_Gradient",
+                                                                tf.abs(
+                                                                    d_gradient_loss) / self.Discriminator_Gradient_Penalty)
+                    d_loss += d_gradient_loss
+                    d_merged_summary = tf.summary.merge([d_merged_summary,
+                                                         d_gradient_loss_summary,
+                                                         d_loss_real_fake_summary])
+
+                cheat_loss = fake_Discriminator_logits
 
 
-            d_loss_real_summary = tf.summary.scalar("Loss_Discriminator/AdversarialReal",
-                                                    tf.abs(d_loss_real) / self.Discriminative_Penalty)
-            d_loss_fake_summary = tf.summary.scalar("Loss_Discriminator/AdversarialFake",
-                                                    tf.abs(d_loss_fake) / self.Discriminative_Penalty)
+                d_loss_real_summary = tf.summary.scalar("Loss_Discriminator/AdversarialReal",
+                                                        tf.abs(d_loss_real) / self.Discriminative_Penalty)
+                d_loss_fake_summary = tf.summary.scalar("Loss_Discriminator/AdversarialFake",
+                                                        tf.abs(d_loss_fake) / self.Discriminative_Penalty)
 
-            d_loss += (d_loss_real+d_loss_fake)/2
-            d_merged_summary = tf.summary.merge([d_merged_summary,
-                                                 d_loss_fake_summary,
-                                                 d_loss_real_summary])
+                d_loss += (d_loss_real+d_loss_fake)/2
+                d_merged_summary = tf.summary.merge([d_merged_summary,
+                                                     d_loss_fake_summary,
+                                                     d_loss_real_summary])
 
-            cheat_loss = tf.reduce_mean(cheat_loss) * self.Discriminative_Penalty
-            cheat_loss_summary = tf.summary.scalar("Loss_Generator/Cheat", tf.abs(cheat_loss) / self.Discriminative_Penalty)
-            g_loss+=cheat_loss
-            g_merged_summary=tf.summary.merge([g_merged_summary,cheat_loss_summary])
+                cheat_loss = tf.reduce_mean(cheat_loss) * self.Discriminative_Penalty
+                cheat_loss_summary = tf.summary.scalar("Loss_Generator/Cheat", tf.abs(cheat_loss) / self.Discriminative_Penalty)
+                g_loss+=cheat_loss
+                g_merged_summary=tf.summary.merge([g_merged_summary,cheat_loss_summary])
 
 
 
@@ -1080,7 +1114,7 @@ class SnGac(object):
             print("The discriminator is frozen.")
             d_optimizer=None
 
-        if gen_vars_train:
+        if gen_vars_train and self.training_mode == 'GeneratorInit':
             if self.optimization_method == 'adam':
                 g_optimizer = tf.train.AdamOptimizer(learning_rate, beta1=0.5).minimize(generator_loss_train,
                                                                                         var_list=gen_vars_train)
@@ -1466,10 +1500,12 @@ class SnGac(object):
 
             info=""
 
-            # batch_train_prototype, batch_train_reference, \
-            # batch_train_label0_onehot, batch_train_label1_onehot,\
-            # batch_train_label0_dense, batch_train_label1_dense = \
-            #     data_provider.train_iterator.get_next_batch(sess=self.sess)
+            #batch_train_prototype, batch_train_reference, \
+            #batch_train_label0_onehot, batch_train_label1_onehot,\
+            #batch_train_label0_dense, batch_train_label1_dense = \
+            #    data_provider.train_iterator.get_next_batch(sess=self.sess)
+	    #print(batch_train_prototype.shape)
+	    #print(batch+train_reference.shape)
 
             optimization_start = time.time()
 
@@ -1481,7 +1517,7 @@ class SnGac(object):
 
             # optimization for generator every (g_iters) iterations
             if ((global_step.eval(session=self.sess)) % g_iters == 0
-                or global_step.eval(session=self.sess) == global_step_start + 1) and gen_vars_train:
+                or global_step.eval(session=self.sess) == global_step_start + 1) and gen_vars_train and self.training_mode == 'GeneratorInit':
                 _ = self.sess.run(optimizer_g, feed_dict={learning_rate: current_lr_real})
 
                 info = info + "&&G"
@@ -1551,22 +1587,22 @@ class SnGac(object):
                                                         print_interval=self.print_info_seconds/10,
                                                         epoch_index=ei)
 
-            if ei < self.final_training_epochs or current_test_accuracy > self.highest_test_accuracy:
-
+            if self.training_mode == 'GeneratorInit' or (self.training_mode=='DiscriminatorFineTune' and current_test_accuracy > self.highest_test_accuracy):
                 current_time = time.strftime('%Y-%m-%d @ %H:%M:%S', time.localtime())
                 print("Time:%s,Checkpoint:SaveCheckpoint@step:%d" % (current_time, global_step.eval(session=self.sess)))
                 self.checkpoint(saver=saver_discriminator,
                                 model_dir=os.path.join(self.checkpoint_dir, 'discriminator'),
                                 global_step=global_step)
-                self.checkpoint(saver=saver_generator,
-                                model_dir=os.path.join(self.checkpoint_dir, 'generator'),
-                                global_step=global_step)
                 self.checkpoint(saver=saver_frameworks,
                                 model_dir=os.path.join(self.checkpoint_dir, 'frameworks'),
                                 global_step=global_step)
+                if self.training_mode == 'GeneratorInit':
+                    self.checkpoint(saver=saver_generator,
+                                    model_dir=os.path.join(self.checkpoint_dir, 'generator'),
+                                    global_step=global_step)
                 print(self.print_separater)
 
-                if (current_test_accuracy > self.highest_test_accuracy and ei > self.init_training_epochs + 3) or self.debug_mode == 1:
+                if (current_test_accuracy > self.highest_test_accuracy and (ei > self.init_training_epochs + 3 or self.training_mode == 'DiscriminatorFineTune')) or self.debug_mode == 1:
                     self.highest_test_accuracy = current_test_accuracy
                     self.highest_test_accuracy_epoch = ei
                     self.highest_test_accuracy_info_line1 = "CurrentHighestGeneratedTestAccuracy:%.3f @ Epoch:%d" %\
@@ -1586,6 +1622,11 @@ class SnGac(object):
                             line2 = line2 + '%.3f;' % ii
                         tmp_counter += 1
                     self.highest_test_accuracy_info_line2 = line2
+                elif ei <= self.init_training_epochs + 3 and self.training_mode == 'GeneratorInit':
+                    self.highest_test_accuracy_info_line1 = 'N/A@Epoch:%d' % ei
+                    self.highest_test_accuracy_info_line2 = 'N/A@Epoch:%d' % ei
+
+
 
 
 
@@ -1607,7 +1648,10 @@ class SnGac(object):
 
                 if epoch_step.eval(session=self.sess) < self.init_training_epochs:
                     current_critic_logit_penalty_value = (float(global_step.eval(session=self.sess))/float(self.init_training_epochs*self.itrs_for_current_epoch))*self.Discriminative_Penalty + eps
-                    current_lr_real = current_lr * 0.1
+                    if self.training_mode == 'GeneratorInit':
+                        current_lr_real = current_lr * 0.1
+                    else:
+                        current_lr_real = current_lr
                 else:
                     current_critic_logit_penalty_value = self.Discriminative_Penalty
                     current_lr_real = current_lr
@@ -1656,7 +1700,7 @@ class SnGac(object):
                         print(self.print_separater)
 
 
-                if ((time.time()-summary_start>summary_seconds) and (self.debug_mode==0) and global_step.eval(session=self.sess)>=2500) \
+                if ((time.time()-summary_start>summary_seconds) and (self.debug_mode==0) and (global_step.eval(session=self.sess)>=2500 or self.training_mode=='DiscriminatorFineTune')) \
                         or self.debug_mode==1:
                     summary_start = time.time()
 

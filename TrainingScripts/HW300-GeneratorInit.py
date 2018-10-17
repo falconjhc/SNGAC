@@ -26,21 +26,21 @@ exp_root_path = '/DataA/Harric/ChineseCharacterExp/'
 # training_mode = 'GeneratorInit';
 #                 'DiscriminatorFineTune';
 input_args = [
-              '--debug_mode','1',
+              '--debug_mode','0',
               '--training_mode','GeneratorInit',
-              '--init_training_epochs','1',
-              '--final_training_epochs','25',
+              '--init_training_epochs','3',
+              '--final_training_epochs','500',
 
               '--generator_device','/device:GPU:0',
               '--discriminator_device', '/device:GPU:0',
               '--style_embedder_device','/device:GPU:0',
 
 
-              '--train_data_augment','1', # translation? rotation?
-              '--experiment_id','DEBUG',# experiment name prefix
+              '--train_data_augment','0', # translation? rotation?
+              '--experiment_id','20180918_SNGAC_StyleHw300',# experiment name prefix
               '--experiment_dir','../../Exp_SNGAC', # model saving location
               '--log_dir','tfLogs_SNGAC/',# log file saving location
-              '--print_info_seconds','3',
+              '--print_info_seconds','900',
 
               '--content_data_dir', # standard data location
     'CASIA_Dataset/StandardChars/GB2312_L1/',
@@ -55,43 +55,42 @@ input_args = [
     '../FileList/StandardChars/Char_0_3754_GB2312L1.txt',
 
               '--file_list_txt_style_train', # file list of the training data
-    '../FileList/HandWritingData/Char_0_29_Writer_1001_1005_Isolated.txt',
+    '../FileList/HandWritingData/Char_0_3754_Writer_1001_1300_Isolated.txt',
 
               '--file_list_txt_style_validation', # file list of the validation data
-    '../FileList/HandWritingData/Char_0_29_Writer_1001_1005_Cursive.txt',
+    '../FileList/HandWritingData/Char_0_3754_Writer_1001_1300_Cursive.txt',
 
 
 
               # generator && discriminator
               '--generator_residual_at_layer','3',
-              '--generator_residual_blocks','1',
+              '--generator_residual_blocks','9',
               '--discriminator','DisMdy6conv',
 
-              '--batch_size','4',
+              '--batch_size','32',
               '--img_width','64',
               '--channels','1',
 
               # optimizer parameters
-              '--init_lr','0.0001',
-              '--epoch','50',
-              '--resume_training','0', # 0: training from scratch; 1: training from a pre-trained point
+              '--init_lr','0.001',
+              '--epoch','1500',
+              '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
               '--final_learning_rate_pctg','0.01',
 
-
-              # penalties
-              '--generator_weight_decay_penalty','0.0001',
-              '--discriminator_weight_decay_penalty','0.0003',
-              '--Pixel_Reconstruction_Penalty','5',
-              '--Lconst_style_Penalty','3',
-              '--Discriminative_Penalty', '3',
-              '--Discriminator_Categorical_Penalty', '1',
-              '--Discriminator_Gradient_Penalty', '10',
+                # penalties
+                '--generator_weight_decay_penalty', '0.0001',
+                '--discriminator_weight_decay_penalty', '0.0003',
+                '--Pixel_Reconstruction_Penalty', '50',
+                '--Lconst_style_Penalty', '15',
+                '--Discriminative_Penalty', '50',
+                '--Discriminator_Categorical_Penalty', '25',
+                '--Discriminator_Gradient_Penalty', '10',
 
               # feature extractor parametrers
               '--style_embedder_dir',
-    'TrainedModel_CNN/ContentStyleBoth/Exp20180802_FeatureExtractor_StyleContent_HW50_vgg16net/variables/',
+    'TrainedModel_CNN/ContentStyleBoth/Exp20180802_FeatureExtractor_StyleContent_HW300_vgg16net/variables/',
               ]
 
 

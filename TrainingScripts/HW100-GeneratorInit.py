@@ -20,46 +20,51 @@ exp_root_path = '/DataA/Harric/ChineseCharacterExp/'
 
 # OPTIONS SPECIFICATION
 # resume_training = 0: training from stratch
-#                   1: training from a based model
+#                   1: resume training from a previous trained model with identical parameter setting
+
+
+# training_mode = 'GeneratorInit';
+#                 'DiscriminatorFineTune';
 input_args = [
               '--debug_mode','0',
+              '--training_mode','GeneratorInit',
               '--init_training_epochs','3',
-              '--final_training_epochs','500',
+              '--final_training_epochs','1000',
 
               '--generator_device','/device:GPU:0',
               '--discriminator_device', '/device:GPU:0',
               '--style_embedder_device','/device:GPU:0',
 
 
-              '--train_data_augment','1', # translation? rotation?
-              '--experiment_id','20180918_SNGAC_StyleHw300',# experiment name prefix
+              '--train_data_augment','0', # translation? rotation?
+              '--experiment_id','20180918_SNGAC_StyleHw100',# experiment name prefix
               '--experiment_dir','../../Exp_SNGAC', # model saving location
               '--log_dir','tfLogs_SNGAC/',# log file saving location
               '--print_info_seconds','900',
 
               '--content_data_dir', # standard data location
-    'CASIA_64_Dataset/StandardChars/GB2312_L1/',
+    'CASIA_Dataset/StandardChars/GB2312_L1/',
 
               '--style_train_data_dir', # training data location
-    'CASIA_64_Dataset/HandWritingData/CASIA-HWDB1.1/',
+    'CASIA_Dataset/HandWritingData_240Binarized/CASIA-HWDB1.1/',
 
               '--style_validation_data_dir',# validation data location
-    'CASIA_64_Dataset/HandWritingData/CASIA-HWDB2.1/',
+    'CASIA_Dataset/HandWritingData_240Binarized/CASIA-HWDB2.1/',
 
               '--file_list_txt_content', # file list of the standard data
     '../FileList/StandardChars/Char_0_3754_GB2312L1.txt',
 
               '--file_list_txt_style_train', # file list of the training data
-    '../FileList/HandWritingData/Char_0_3754_Writer_1001_1300_Isolated.txt',
+    '../FileList/HandWritingData/Char_0_3754_Writer_1101_1200_Isolated.txt',
 
               '--file_list_txt_style_validation', # file list of the validation data
-    '../FileList/HandWritingData/Char_0_3754_Writer_1001_1300_Cursive.txt',
+    '../FileList/HandWritingData/Char_0_3754_Writer_1101_1200_Cursive.txt',
 
 
 
               # generator && discriminator
               '--generator_residual_at_layer','3',
-              '--generator_residual_blocks','9',
+              '--generator_residual_blocks','5',
               '--discriminator','DisMdy6conv',
 
               '--batch_size','32',
@@ -68,30 +73,32 @@ input_args = [
 
               # optimizer parameters
               '--init_lr','0.001',
-              '--epoch','1500',
+              '--epoch','3000',
               '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
               '--final_learning_rate_pctg','0.01',
 
-                # penalties
-                '--generator_weight_decay_penalty', '0.0001',
-                '--discriminator_weight_decay_penalty', '0.0003',
-                '--Pixel_Reconstruction_Penalty', '50',
-                '--Lconst_style_Penalty', '15',
-                '--Discriminative_Penalty', '50',
-                '--Discriminator_Categorical_Penalty', '25',
-                '--Discriminator_Gradient_Penalty', '10',
+
+              # penalties
+              '--generator_weight_decay_penalty','0.0001',
+              '--discriminator_weight_decay_penalty','0.0003',
+              '--Pixel_Reconstruction_Penalty','50',
+              '--Lconst_style_Penalty','15',
+              '--Discriminative_Penalty', '50',
+              '--Discriminator_Categorical_Penalty', '25',
+              '--Discriminator_Gradient_Penalty', '10',
 
               # feature extractor parametrers
               '--style_embedder_dir',
-    'TrainedModel_CNN/ContentStyleBoth/Exp20180802_FeatureExtractor_StyleContent_HW300_vgg16net/variables/',
+    'TrainedModel_CNN/ContentStyleBoth/Exp20180802_FeatureExtractor_StyleContent_HW100_vgg16net/variables/',
               ]
 
 
 
 parser = argparse.ArgumentParser(description='Train')
 parser.add_argument('--debug_mode', dest='debug_mode',type=int,required=True)
+parser.add_argument('--training_mode', dest='training_mode',type=str,required=True)
 parser.add_argument('--resume_training', dest='resume_training', type=int,required=True)
 parser.add_argument('--train_data_augment', dest='train_data_augment', type=int,required=True)
 parser.add_argument('--print_info_seconds', dest='print_info_seconds',type=int,required=True)
@@ -239,6 +246,7 @@ def main(_):
         style_validation_data_dir[ii] = os.path.join(exp_root_path, style_validation_data_dir[ii])
 
     model = SNGAC(debug_mode=args.debug_mode,
+                  training_mode=args.training_mode,
                   print_info_seconds=args.print_info_seconds,
                   experiment_dir=args.experiment_dir, experiment_id=args.experiment_id,
                   log_dir=os.path.join(exp_root_path, args.log_dir),

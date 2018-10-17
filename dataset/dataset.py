@@ -276,6 +276,13 @@ class Dataset_Iterator(object):
                     img_all_new = tf.concat([img_all_new,cropped_img],axis=0)
             img_all = img_all_new
 
+            # img_all_croppedimg_all_cropped = tf.random_crop(value=img_all,
+            #                                                 size=[int(img_all.shape[0]),
+            #                                                       crop_size, crop_size,
+            #                                                       int(img_all.shape[3])])
+            # img_all = tf.image.resize_images(img_all_croppedimg_all_cropped, [self.input_width, self.input_width])
+            # img_all = tf.reshape(img_all,[self.batch_size,self.input_width,self.input_width,self.input_filters*2])
+
         img_all = tf.subtract(tf.divide(tf.cast(img_all, tf.float32), tf.constant(GRAYSCALE_AVG, tf.float32)),
                               tf.constant(1, tf.float32))
         content_img_tensor = tf.expand_dims(img_all[:, :, :, 0], axis=3)
