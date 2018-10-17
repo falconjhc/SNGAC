@@ -967,7 +967,13 @@ class SnGac(object):
 
             real_category_loss = tf.reduce_mean(real_category_loss) * self.Discriminator_Categorical_Penalty
             fake_category_loss = tf.reduce_mean(fake_category_loss) * self.Discriminator_Categorical_Penalty
-            category_loss = (real_category_loss + fake_category_loss) / 2.0
+
+            if self.training_mode == 'GeneratorInit':
+                category_loss = (real_category_loss + fake_category_loss) / 2.0
+            elif self.training_mode == 'DiscriminatorInit':
+                category_loss = fake_category_loss + real_category_loss * eps
+
+
 
 
             real_category_loss_summary = tf.summary.scalar("Loss_Discriminator/CategoryReal",
