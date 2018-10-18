@@ -382,7 +382,7 @@ class SnGac(object):
         categorical_logits = \
             self.sess.run(evalHandle.inferring_discriminator_categorical_logits,
                           feed_dict={discriminator_handle.content_infer: content_infer_batch,
-                                     discriminator_handle.style_infer:style_infer_batch})
+                                     discriminator_handle.style_infer: style_infer_batch})
         return categorical_logits
 
 
@@ -749,8 +749,6 @@ class SnGac(object):
 
                 # for inferring
                 style_reference_infer = data_provider.validate_iterator.output_tensor_list[1]
-
-
                 generated_target_infer = \
                     generator_implementation(style_reference=style_reference_infer,
                                              is_training=False,

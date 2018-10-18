@@ -25,9 +25,7 @@ exp_root_path = '/DataA/Harric/ChineseCharacterExp/'
 
 # training_mode = 'GeneratorInit';
 #                 'DiscriminatorFineTune';
-input_args = ['--training_from_model_dir',
-              '../../Exp_SNGAC/checkpoint/Exp20180918_SNGAC_StyleHw100-GeneratorInit-GenEncDec6-Res5@Lyr3_DisMdy6conv/',
-              '--debug_mode','0',
+input_args = ['--debug_mode','0',
               '--training_mode','DiscriminatorFineTune',
               '--init_training_epochs','1',
               '--final_training_epochs','1000',
@@ -75,7 +73,7 @@ input_args = ['--training_from_model_dir',
               # optimizer parameters
               '--init_lr','0.0005',
               '--epoch','3000',
-              '--resume_training','0', # 0: training from scratch; 1: training from a pre-trained point
+              '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
               '--final_learning_rate_pctg','0.01',

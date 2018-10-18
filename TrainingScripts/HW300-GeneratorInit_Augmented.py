@@ -74,9 +74,9 @@ input_args = [
               '--channels','1',
 
               # optimizer parameters
-              '--init_lr','0.003',
+              '--init_lr','0.002',
               '--epoch','3000',
-              '--resume_training','0', # 0: training from scratch; 1: training from a pre-trained point
+              '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
               '--final_learning_rate_pctg','0.01',

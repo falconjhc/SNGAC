@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d068e1ae-a1f2-4436-bb4f-7ed5677d49e5" name="Default Changelist" comment="20180918 modify validate and model save pipeline">
+      <change beforePath="$PROJECT_DIR$/TrainingScripts/HW100-GeneratorInit_Augmented.py" beforeDir="false" afterPath="$PROJECT_DIR$/TrainingScripts/HW100-GeneratorInit_Augmented.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/sngac.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/sngac.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,25 +14,8 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/SNGAC$sngac_debug.coverage" NAME="sngac_debug Coverage Results" MODIFIED="1539769491701" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DebugScripts" />
     <SUITE FILE_PATH="coverage/SNGAC$HW100.coverage" NAME="HW100 Coverage Results" MODIFIED="1537338664724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TrainingScripts" />
-  </component>
-  <component name="DockManager">
-    <window id="5">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/model/sngac.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-1842">
-                    <caret line="1520" column="143" selection-start-line="1520" selection-start-column="109" selection-end-line="1520" selection-end-column="143" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
+    <SUITE FILE_PATH="coverage/SNGAC$HW100_GeneratorInit_Augmented.coverage" NAME="HW100-GeneratorInit_Augmented Coverage Results" MODIFIED="1539843743126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TrainingScripts" />
+    <SUITE FILE_PATH="coverage/SNGAC$HW100_DiscriminatorFineTune.coverage" NAME="HW100-DiscriminatorFineTune Coverage Results" MODIFIED="1539841999231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TrainingScripts" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="1997689196">
@@ -56,38 +40,38 @@
     <session id="855328728">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="10" />
+          <entry key="project.closed" value="11" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.5" value="3" />
-          <entry key="project.open.time.6" value="2" />
+          <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="13" />
+          <entry key="project.opened" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="44" />
+          <entry key="py" value="49" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="44" />
+          <entry key="Python" value="49" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Python Console" value="139" />
-          <entry key="py" value="2542" />
+          <entry key="Python Console" value="422" />
+          <entry key="py" value="2546" />
           <entry key="txt" value="52" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="52" />
-          <entry key="Python" value="2681" />
+          <entry key="Python" value="2968" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -95,30 +79,15 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/DebugScripts/sngac_debug.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="278" lean-forward="true" selection-start-line="278" selection-end-line="278" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>val_fake_dis_ebdd_summaries</find>
-      <find>np.argmax</find>
-      <find>discriminator_handle.c</find>
-      <find>embedder</find>
       <find>_CNN</find>
       <find>$PROJECT_DIR$/TrainingScripts/HW100.py</find>
       <find>VN</find>
       <find>Generator_Categorical_Penalty</find>
       <find>SNGAC</find>
-      <find>validate_full_validation_dataset</find>
       <find>self.highest_test_accuracy</find>
       <find>top</find>
       <find>top_k</find>
@@ -136,9 +105,14 @@
       <find>generator_build</find>
       <find>train_imple</find>
       <find>training_start_time</find>
-      <find>discriminator_build</find>
       <find>cr</find>
       <find>train_implementation</find>
+      <find>discriminator_build</find>
+      <find>content_infer</find>
+      <find>output</find>
+      <find>inferring_generated_images</find>
+      <find>generate_fake_samples</find>
+      <find>validate_full_validation_dataset</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -151,6 +125,7 @@
         <option value="$PROJECT_DIR$/TrainingScripts/HW100.py" />
         <option value="$PROJECT_DIR$/TrainingScripts/HW300.py" />
         <option value="$PROJECT_DIR$/dataset/dataset.py" />
+        <option value="$PROJECT_DIR$/TrainingScripts/HW100-GeneratorInit_Augmented.py" />
         <option value="$PROJECT_DIR$/model/sngac.py" />
       </list>
     </option>
@@ -192,7 +167,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -224,6 +198,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -245,7 +220,51 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.HW100-GeneratorInit_Augmented">
+    <configuration name="HW100-DiscriminatorFineTune" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SNGAC" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/TrainingScripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TrainingScripts/HW100-DiscriminatorFineTune.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="HW100-GeneratorInit_Augmented" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SNGAC" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/TrainingScripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TrainingScripts/HW100-GeneratorInit_Augmented.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="SNGAC" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -290,8 +309,15 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.sngac_debug" />
+      <item itemvalue="Python.HW100-DiscriminatorFineTune" />
+      <item itemvalue="Python.HW100-GeneratorInit_Augmented" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.HW100-GeneratorInit_Augmented" />
+        <item itemvalue="Python.HW100-DiscriminatorFineTune" />
         <item itemvalue="Python.sngac_debug" />
       </list>
     </recent_temporary>
@@ -326,15 +352,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="25" width="1229" height="999" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18089603" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13355875" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.52369666" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.51303315" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -347,7 +372,7 @@
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" weight="0.32977587" />
+      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.32967034" />
       <window_info anchor="right" x="0" y="0" width="359" height="828" id="Documentation" order="4" side_tool="true" weight="0.52071005" />
       <window_info anchor="right" id="Database" order="5" />
     </layout>
@@ -399,19 +424,22 @@
           <line>1</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/model/sngac.py</url>
+          <line>1588</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/model/sngac.py</url>
+          <line>1852</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/TrainingScripts/HW300.py" />
     <entry file="file://$PROJECT_DIR$/TrainingScripts/HW100.py" />
-    <entry file="file://$PROJECT_DIR$/dataset/dataset.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="277" selection-start-line="277" selection-end-line="277" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.conda/envs/tensorflow_py27/lib/python2.7/site-packages/tensorflow/python/framework/ops.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27882">
@@ -428,15 +456,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DebugScripts/sngac_debug.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="278" lean-forward="true" selection-start-line="278" selection-end-line="278" />
+        <state relative-caret-position="540">
+          <caret line="284" lean-forward="true" selection-start-line="284" selection-end-line="284" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TrainingScripts/HW100-GeneratorInit_Augmented.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="666">
+          <caret line="71" column="29" selection-start-line="71" selection-start-column="29" selection-end-line="71" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/model/sngac.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1842">
-          <caret line="1520" column="143" selection-start-line="1520" selection-start-column="109" selection-end-line="1520" selection-end-column="143" />
+        <state relative-caret-position="523">
+          <caret line="1849" column="34" selection-start-line="1849" selection-start-column="12" selection-end-line="1849" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dataset/dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="292" column="55" selection-start-line="292" selection-start-column="39" selection-end-line="292" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TrainingScripts/HW100-DiscriminatorFineTune.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="71">
+          <caret line="292" column="17" selection-start-line="292" selection-start-column="10" selection-end-line="292" selection-end-column="26" />
         </state>
       </provider>
     </entry>
