@@ -30,7 +30,7 @@ input_args = [
               '--debug_mode','0',
               '--training_mode','GeneratorInit',
               '--init_training_epochs','3',
-              '--final_training_epochs','500',
+              '--final_training_epochs','400',
 
               '--generator_device','/device:GPU:0',
               '--discriminator_device', '/device:GPU:0',

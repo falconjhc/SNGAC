@@ -32,7 +32,7 @@ input_args = [
               '--debug_mode','0',
               '--training_mode','GeneratorInit',
               '--init_training_epochs','1',
-              '--final_training_epochs','1000',
+              '--final_training_epochs','400',
 
               '--generator_device','/device:GPU:0',
               '--discriminator_device', '/device:GPU:0',
@@ -76,7 +76,7 @@ input_args = [
 
               # optimizer parameters
               '--init_lr','0.002',
-              '--epoch','3000',
+              '--epoch','1500',
               '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
