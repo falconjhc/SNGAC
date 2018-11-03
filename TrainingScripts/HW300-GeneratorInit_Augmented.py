@@ -14,7 +14,8 @@ eps = 1e-9
 
 
 
-exp_root_path = '/DataA/Harric/ChineseCharacterExp/'
+data_path_root = '/Data_SSD/Harric/ChineseCharacterExp/'
+model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 # exp_root_path = '/Users/harric/Data/'
 
 # OPTIONS SPECIFICATION
@@ -40,7 +41,7 @@ input_args = [
 
               '--train_data_augment','1', # translation? rotation?
               '--experiment_id','20181017_SNGAC_StyleHw300',# experiment name prefix
-              '--experiment_dir','../../Exp_SNGAC', # model saving location
+              '--experiment_dir','tfModels_SNGAC', # model saving location
               '--log_dir','tfLogs_SNGAC/',# log file saving location
               '--print_info_seconds','900',
 
@@ -239,19 +240,20 @@ def main(_):
 
     content_data_dir = args.content_data_dir.split(',')
     for ii in range(len(content_data_dir)):
-        content_data_dir[ii] = os.path.join(exp_root_path, content_data_dir[ii])
+        content_data_dir[ii] = os.path.join(data_path_root, content_data_dir[ii])
     style_train_data_dir = args.style_train_data_dir.split(',')
     for ii in range(len(style_train_data_dir)):
-        style_train_data_dir[ii] = os.path.join(exp_root_path, style_train_data_dir[ii])
+        style_train_data_dir[ii] = os.path.join(data_path_root, style_train_data_dir[ii])
     style_validation_data_dir = args.style_validation_data_dir.split(',')
     for ii in range(len(style_validation_data_dir)):
-        style_validation_data_dir[ii] = os.path.join(exp_root_path, style_validation_data_dir[ii])
+        style_validation_data_dir[ii] = os.path.join(data_path_root, style_validation_data_dir[ii])
 
     model = SNGAC(debug_mode=args.debug_mode,
                   training_mode = args.training_mode,
                   print_info_seconds=args.print_info_seconds,
-                  experiment_dir=args.experiment_dir, experiment_id=args.experiment_id,
-                  log_dir=os.path.join(exp_root_path, args.log_dir),
+                  experiment_dir=os.path.join(model_log_path_root, args.experiment_dir),
+                  experiment_id=args.experiment_id,
+                  log_dir=os.path.join(model_log_path_root, args.log_dir),
                   training_from_model=args.training_from_model_dir,
                   train_data_augment=args.train_data_augment,
 
@@ -288,7 +290,7 @@ def main(_):
                   generator_residual_at_layer=args.generator_residual_at_layer,
                   generator_residual_blocks=args.generator_residual_blocks,
                   discriminator=args.discriminator,
-                  style_embedder_dir=os.path.join(exp_root_path, args.style_embedder_dir))
+                  style_embedder_dir=os.path.join(model_log_path_root, args.style_embedder_dir))
 
 
     model.train_procedures()

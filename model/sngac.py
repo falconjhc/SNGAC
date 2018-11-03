@@ -1495,7 +1495,7 @@ class SnGac(object):
             if current_epoch <= self.final_training_epochs:
                 self.g_iters = 5
             else:
-                self.g_iters = 3
+                self.g_iters = 2
 
             if global_step.eval(session=self.sess) <= self.g_iters * 5 * self.discriminator_initialization_iters:
                 g_iters = self.g_iters * 5

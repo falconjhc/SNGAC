@@ -14,7 +14,7 @@ eps = 1e-9
 
 
 
-data_path_root = '/Data_SSD/Harric/ChineseCharacterExp/'
+data_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 # exp_root_path = '/Users/harric/Data/'
 
@@ -26,9 +26,10 @@ model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 
 # training_mode = 'GeneratorInit';
 #                 'DiscriminatorFineTune';
-input_args = ['--debug_mode','0',
-              '--training_mode','DiscriminatorFineTune',
-              '--init_training_epochs','1',
+input_args = [
+              '--debug_mode','0',
+              '--training_mode','GeneratorInit',
+              '--init_training_epochs','3',
               '--final_training_epochs','1000',
 
               '--generator_device','/device:GPU:0',
@@ -37,8 +38,8 @@ input_args = ['--debug_mode','0',
 
 
               '--train_data_augment','0', # translation? rotation?
-              '--experiment_id','20181017_SNGAC_StyleHw100',# experiment name prefix
-              '--experiment_dir','tfModels_SNGAC', # model saving location
+              '--experiment_id','20181025_SNGAC_StyleHw100',# experiment name prefix
+              '--experiment_dir','tfModels_SNGAC',  # model saving location
               '--log_dir','tfLogs_SNGAC/',# log file saving location
               '--print_info_seconds','900',
 
@@ -72,7 +73,7 @@ input_args = ['--debug_mode','0',
               '--channels','1',
 
               # optimizer parameters
-              '--init_lr','0.0005',
+              '--init_lr','0.002',
               '--epoch','3000',
               '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
 
