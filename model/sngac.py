@@ -2,6 +2,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
 GRAYSCALE_AVG = 127.5
+TINIEST_LR = 0.000125
 
 import matplotlib.pyplot as plt
 
@@ -1547,6 +1548,7 @@ class SnGac(object):
         else:
             ei_start = 0
             current_lr = self.lr
+        current_lr = max(current_lr,TINIEST_LR)
         global_step_start = global_step.eval(session=self.sess)
         print("InitTrainingEpochs:%d, FinalTrainingEpochStartAt:%d" % (self.init_training_epochs,self.final_training_epochs))
         print("TrainingStart:Epoch:%d, GlobalStep:%d, LearnRate:%.5f" % (ei_start+1,global_step_start+1,current_lr))
