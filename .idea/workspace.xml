@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d068e1ae-a1f2-4436-bb4f-7ed5677d49e5" name="Default Changelist" comment="20180918 modify validate and model save pipeline">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrainingScripts/HW100-DiscriminatorFineTune.py" beforeDir="false" afterPath="$PROJECT_DIR$/TrainingScripts/HW100-DiscriminatorFineTune.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrainingScripts/HW100-GeneratorInit_Augmented.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrainingScripts/HW100-GeneratorInit_GreaterLr.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrainingScripts/HW300-GeneratorInit_Augmented.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/model/sngac.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/sngac.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,8 +42,8 @@
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/model/sngac.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="378">
-                    <caret line="1550" column="46" selection-start-line="1550" selection-start-column="46" selection-end-line="1550" selection-end-column="46" />
+                  <state relative-caret-position="570">
+                    <caret line="253" column="1" selection-start-line="253" selection-start-column="1" selection-end-line="253" selection-end-column="1" />
                     <folding>
                       <element signature="e#24#61#0" expanded="true" />
                     </folding>
@@ -78,37 +81,37 @@
         <counts>
           <entry key="project.closed" value="14" />
           <entry key="project.open.time.0" value="3" />
-          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.5" value="5" />
           <entry key="project.open.time.6" value="4" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="19" />
+          <entry key="project.opened" value="20" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="64" />
+          <entry key="py" value="67" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="64" />
+          <entry key="Python" value="67" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="459" />
-          <entry key="py" value="2626" />
+          <entry key="py" value="3065" />
           <entry key="txt" value="52" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="52" />
-          <entry key="Python" value="3085" />
+          <entry key="Python" value="3524" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -117,11 +120,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DebugScripts/sngac_debug.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="41" column="17" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
+            <state relative-caret-position="936">
+              <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/TrainingScripts/HW100-DiscriminatorFineTune.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="27" column="40" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -130,11 +142,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>top_k</find>
-      <find>top_k_accuracy</find>
-      <find>DataProvider</find>
-      <find>diff = np.abs(estm_label - true_label;)</find>
-      <find>np.abs</find>
       <find>top_k_correct_calculation</find>
       <find>weight_decay_rate</find>
       <find>create_dataset_op</find>
@@ -160,6 +167,11 @@
       <find>max</find>
       <find>train_implem</find>
       <find>current_lr</find>
+      <find>training_from_model_dir</find>
+      <find>training_from_model</find>
+      <find>training_mode</find>
+      <find>model_initialization</find>
+      <find>DiscriminatorFineTune</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -174,6 +186,7 @@
         <option value="$PROJECT_DIR$/model/gan_networks.py" />
         <option value="$PROJECT_DIR$/dataset/dataset.py" />
         <option value="$PROJECT_DIR$/DebugScripts/sngac_debug.py" />
+        <option value="$PROJECT_DIR$/TrainingScripts/HW100-DiscriminatorFineTune.py" />
         <option value="$PROJECT_DIR$/model/sngac.py" />
       </list>
     </option>
@@ -215,7 +228,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -247,6 +259,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -402,7 +415,7 @@
     <frame x="51" y="25" width="1229" height="999" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14623837" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1487743" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -423,7 +436,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" weight="0.32967034" />
       <window_info anchor="right" id="SciView" order="4" sideWeight="0.49671486" weight="0.3262891" />
-      <window_info anchor="right" x="0" y="0" width="359" height="828" id="Documentation" order="5" sideWeight="0.5039474" side_tool="true" weight="0.3262891" />
+      <window_info anchor="right" x="0" y="0" width="359" height="828" id="Documentation" order="5" sideWeight="0.5039474" side_tool="true" weight="0.32290787" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17769477" />
@@ -475,12 +488,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/model/sngac.py</url>
-          <line>1590</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/model/sngac.py</url>
-          <line>1854</line>
+          <line>1882</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -510,7 +518,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/model/sngac.py</url>
-          <line>1771</line>
+          <line>1799</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
@@ -540,13 +548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TrainingScripts/HW100-DiscriminatorFineTune.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="292" column="17" selection-start-line="292" selection-start-column="10" selection-end-line="292" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utilities/ops.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="55">
@@ -570,15 +571,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DebugScripts/sngac_debug.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="41" column="17" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
+        <state relative-caret-position="936">
+          <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TrainingScripts/HW100-DiscriminatorFineTune.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="27" column="40" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/model/sngac.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="1550" column="46" selection-start-line="1550" selection-start-column="46" selection-end-line="1550" selection-end-column="46" />
+        <state relative-caret-position="570">
+          <caret line="253" column="1" selection-start-line="253" selection-start-column="1" selection-end-line="253" selection-end-column="1" />
           <folding>
             <element signature="e#24#61#0" expanded="true" />
           </folding>

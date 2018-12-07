@@ -18,6 +18,7 @@ data_path_root = '/Data_SSD/Harric/ChineseCharacterExp/'
 model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 # exp_root_path = '/Users/harric/Data/'
 
+
 # OPTIONS SPECIFICATION
 # resume_training = 0: training from stratch
 #                   1: resume training from a previous trained model with identical parameter setting
@@ -25,22 +26,22 @@ model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 
 # training_mode = 'GeneratorInit';
 #                 'DiscriminatorFineTune';
+#                 'DiscriminatorReTrain';
+input_args = ['--training_from_model_dir',
+              '/Data_HDD/Harric/ChineseCharacterExp/tfModels_SNGAC/checkpoint/Exp20180918_SNGAC_StyleHw100-GeneratorInit-GenEncDec6-Res5@Lyr3_DisMdy6conv/',
 
-
-
-input_args = [
               '--debug_mode','0',
-              '--training_mode','GeneratorInit',
+              '--training_mode','DiscriminatorFineTune',
               '--init_training_epochs','1',
-              '--final_training_epochs','400',
+              '--final_training_epochs','1000',
 
               '--generator_device','/device:GPU:0',
               '--discriminator_device', '/device:GPU:0',
               '--style_embedder_device','/device:GPU:0',
 
 
-              '--train_data_augment','1', # translation? rotation?
-              '--experiment_id','20181017_SNGAC_StyleHw300',# experiment name prefix
+              '--train_data_augment','0', # translation? rotation?
+              '--experiment_id','20181207_SNGAC_StyleHw100',# experiment name prefix
               '--experiment_dir','tfModels_SNGAC', # model saving location
               '--log_dir','tfLogs_SNGAC/',# log file saving location
               '--print_info_seconds','900',
@@ -58,10 +59,10 @@ input_args = [
     '../FileList/StandardChars/Char_0_3754_GB2312L1.txt',
 
               '--file_list_txt_style_train', # file list of the training data
-    '../FileList/HandWritingData/Char_0_3754_Writer_1001_1300_Isolated.txt',
+    '../FileList/HandWritingData/Char_0_3754_Writer_1101_1200_Isolated.txt',
 
               '--file_list_txt_style_validation', # file list of the validation data
-    '../FileList/HandWritingData/Char_0_3754_Writer_1001_1300_Cursive.txt',
+    '../FileList/HandWritingData/Char_0_3754_Writer_1101_1200_Cursive.txt',
 
 
 
@@ -75,9 +76,9 @@ input_args = [
               '--channels','1',
 
               # optimizer parameters
-              '--init_lr','0.002',
-              '--epoch','1500',
-              '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
+              '--init_lr','0.0005',
+              '--epoch','3000',
+              '--resume_training','0', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
               '--final_learning_rate_pctg','0.01',
@@ -94,7 +95,7 @@ input_args = [
 
               # feature extractor parametrers
               '--style_embedder_dir',
-    'TrainedModel_CNN/ContentStyleBoth/Exp20180802_FeatureExtractor_StyleContent_HW300_vgg16net/variables/',
+    'TrainedModel_CNN/ContentStyleBoth/Exp20180802_FeatureExtractor_StyleContent_HW100_vgg16net/variables/',
               ]
 
 
@@ -249,7 +250,7 @@ def main(_):
         style_validation_data_dir[ii] = os.path.join(data_path_root, style_validation_data_dir[ii])
 
     model = SNGAC(debug_mode=args.debug_mode,
-                  training_mode = args.training_mode,
+                  training_mode=args.training_mode,
                   print_info_seconds=args.print_info_seconds,
                   experiment_dir=os.path.join(model_log_path_root, args.experiment_dir),
                   experiment_id=args.experiment_id,

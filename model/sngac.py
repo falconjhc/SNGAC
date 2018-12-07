@@ -237,17 +237,21 @@ class SnGac(object):
         self.print_separater = "#################################################################"
 
 
-        if self.training_from_model==None and self.training_mode == 'DiscriminatorFineTune':
+        if self.training_from_model==None and \
+                (self.training_mode == 'DiscriminatorFineTune' or self.training_mode == 'DiscriminatorReTrain') \
+                and self.resume_training==0:
             print(self.print_separater)
             print(self.print_separater)
             print(self.print_separater)
             print(self.print_separater)
-            print("ERROR!!! FineTune Discriminator without loaded initial model!!!")
+            print("ERROR!!! FineTune or ReTrain Discriminator without loaded initial model!!!")
             print(self.print_separater)
             print(self.print_separater)
             print(self.print_separater)
             print(self.print_separater)
             return
+
+
 
     def find_bn_avg_var(self,var_list):
         var_list_new = list()
@@ -288,7 +292,9 @@ class SnGac(object):
         return var_output
 
     def get_model_id_and_dir_for_train(self):
-        if (not self.training_mode == 'DiscriminatorFineTune') and (not self.training_mode == 'GeneratorInit'):
+        if (not self.training_mode == 'DiscriminatorFineTune') \
+                and (not self.training_mode == 'GeneratorInit') \
+                and (not self.training_mode == 'DiscriminatorReTrain') :
             print(self.print_separater)
             print(self.print_separater)
             print(self.print_separater)
@@ -492,7 +498,11 @@ class SnGac(object):
                                                                             merged_disp.shape[2]))})
         summary_writer.add_summary(summray_img, global_step.eval(session=self.sess))
 
-        if self.debug_mode==1 or ((self.debug_mode==0) and (global_step.eval(session=self.sess)>=2500) or self.training_mode == 'FineTuneDiscriminator'):
+        if self.debug_mode==1 or \
+                ((self.debug_mode==0)
+                 and (global_step.eval(session=self.sess)>=2500)
+                 or (self.training_mode == 'FineTuneDiscriminator'
+                     or self.training_mode == 'DiscriminatorReTrain')):
             summary_writer.add_summary(summary_real_output, global_step.eval(session=self.sess))
             summary_writer.add_summary(summary_fake_output, global_step.eval(session=self.sess))
 
@@ -969,7 +979,7 @@ class SnGac(object):
 
             if self.training_mode == 'GeneratorInit':
                 category_loss = (real_category_loss + fake_category_loss) / 2.0
-            elif self.training_mode == 'DiscriminatorFineTune':
+            elif self.training_mode == 'DiscriminatorFineTune' or self.training_mode == 'DiscriminatorReTrain':
                 category_loss = fake_category_loss + real_category_loss * eps
 
 
@@ -1235,10 +1245,20 @@ class SnGac(object):
             variable_comparison_and_restore(current_saver=saver_generator,
                                             restore_model_dir=os.path.join(self.training_from_model, 'generator'),
                                             model_name='Generator_ForPreviousTrainedBaseModel')
-            variable_comparison_and_restore(current_saver=saver_discriminator,
-                                            restore_model_dir=os.path.join(self.training_from_model,
-                                                                           'discriminator'),
-                                            model_name='Discriminator_ForPreviousTrainedBaseModel')
+
+            if self.training_mode =='DiscriminatorFineTune':
+                variable_comparison_and_restore(current_saver=saver_discriminator,
+                                                restore_model_dir=os.path.join(self.training_from_model,
+                                                                               'discriminator'),
+                                                model_name='Discriminator_ForPreviousTrainedBaseModel')
+            else:
+                print(self.print_separater)
+                print(self.print_separater)
+                print(self.print_separater)
+                print("The Classifier attached on the discriminator is trained from scratch.")
+                print(self.print_separater)
+                print(self.print_separater)
+                print(self.print_separater)
 
     def model_initialization(self,
                              saver_generator, saver_discriminator,
@@ -1256,7 +1276,7 @@ class SnGac(object):
                                            model_name="Embedder")
 
 
-        
+
         # restore of the model frameworks
         if self.resume_training == 1:
             framework_restored = self.restore_model(saver=saver_framework,
@@ -1593,7 +1613,9 @@ class SnGac(object):
                                                         print_interval=self.print_info_seconds/10,
                                                         epoch_index=ei)
 
-            if self.training_mode == 'GeneratorInit' or (self.training_mode=='DiscriminatorFineTune' and current_test_accuracy > self.highest_test_accuracy):
+            if self.training_mode == 'GeneratorInit' or \
+                    ((self.training_mode=='DiscriminatorFineTune' or self.training_mode=='DiscriminatorReTrain')
+                     and current_test_accuracy > self.highest_test_accuracy):
                 current_time = time.strftime('%Y-%m-%d @ %H:%M:%S', time.localtime())
                 print("Time:%s,Checkpoint:SaveCheckpoint@step:%d" % (current_time, global_step.eval(session=self.sess)))
                 self.checkpoint(saver=saver_discriminator,
@@ -1602,13 +1624,15 @@ class SnGac(object):
                 self.checkpoint(saver=saver_frameworks,
                                 model_dir=os.path.join(self.checkpoint_dir, 'frameworks'),
                                 global_step=global_step)
-                if self.training_mode == 'GeneratorInit':
-                    self.checkpoint(saver=saver_generator,
-                                    model_dir=os.path.join(self.checkpoint_dir, 'generator'),
-                                    global_step=global_step)
+                self.checkpoint(saver=saver_generator,
+                                model_dir=os.path.join(self.checkpoint_dir, 'generator'),
+                                global_step=global_step)
                 print(self.print_separater)
 
-                if (current_test_accuracy > self.highest_test_accuracy and (ei > self.init_training_epochs + 3 or self.training_mode == 'DiscriminatorFineTune')) or self.debug_mode == 1:
+                if (current_test_accuracy > self.highest_test_accuracy
+                    and (ei > self.init_training_epochs + 3
+                         or (self.training_mode == 'DiscriminatorFineTune' or self.training_mode == 'DiscriminatorReTrain'))) \
+                        or self.debug_mode == 1:
                     self.highest_test_accuracy = current_test_accuracy
                     self.highest_test_accuracy_epoch = ei
                     self.highest_test_accuracy_info_line1 = "CurrentHighestGeneratedTestAccuracy:%.3f @ Epoch:%d" %\
@@ -1706,7 +1730,11 @@ class SnGac(object):
                         print(self.print_separater)
 
 
-                if ((time.time()-summary_start>summary_seconds) and (self.debug_mode==0) and (global_step.eval(session=self.sess)>=2500 or self.training_mode=='DiscriminatorFineTune')) \
+                if ((time.time()-summary_start>summary_seconds)
+                    and (self.debug_mode==0)
+                    and (global_step.eval(session=self.sess)>=2500
+                         or (self.training_mode=='DiscriminatorFineTune'
+                             or self.training_mode=='DiscriminatorReTrain'))) \
                         or self.debug_mode==1:
                     summary_start = time.time()
 

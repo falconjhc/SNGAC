@@ -26,7 +26,11 @@ model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 
 # training_mode = 'GeneratorInit';
 #                 'DiscriminatorFineTune';
-input_args = ['--debug_mode','0',
+#                 'DiscriminatorReTrain';
+input_args = ['--training_from_model_dir',
+              '/Data_HDD/Harric/ChineseCharacterExp/tfModels_SNGAC/checkpoint/Exp20180918_SNGAC_StyleHw100-GeneratorInit-GenEncDec6-Res5@Lyr3_DisMdy6conv/',
+
+              '--debug_mode','0',
               '--training_mode','DiscriminatorFineTune',
               '--init_training_epochs','1',
               '--final_training_epochs','1000',
@@ -37,7 +41,7 @@ input_args = ['--debug_mode','0',
 
 
               '--train_data_augment','0', # translation? rotation?
-              '--experiment_id','20181017_SNGAC_StyleHw100',# experiment name prefix
+              '--experiment_id','20181207_SNGAC_StyleHw100',# experiment name prefix
               '--experiment_dir','tfModels_SNGAC', # model saving location
               '--log_dir','tfLogs_SNGAC/',# log file saving location
               '--print_info_seconds','900',
@@ -74,7 +78,7 @@ input_args = ['--debug_mode','0',
               # optimizer parameters
               '--init_lr','0.0005',
               '--epoch','3000',
-              '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
+              '--resume_training','0', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
               '--final_learning_rate_pctg','0.01',
