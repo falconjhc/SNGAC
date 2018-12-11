@@ -3,6 +3,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 GRAYSCALE_AVG = 127.5
 TINIEST_LR = 0.000125
+DISCRIMINATOR_TRAIN_INIT_EPOCH = 15
 
 import matplotlib.pyplot as plt
 
@@ -587,7 +588,6 @@ class SnGac(object):
             with tf.variable_scope(tf.get_variable_scope()):
                 with tf.device(self.style_embedder_device):
 
-		    #print(data_provider.train_iterator.output_tensor_list[1].shape)
                     train_label1_logits, train_label0_logits, network_info = \
                         feature_ebddactor_network(image=data_provider.train_iterator.output_tensor_list[1],
                                                   batch_size=self.batch_size,
@@ -1525,13 +1525,6 @@ class SnGac(object):
 
             info=""
 
-            #batch_train_prototype, batch_train_reference, \
-            #batch_train_label0_onehot, batch_train_label1_onehot,\
-            #batch_train_label0_dense, batch_train_label1_dense = \
-            #    data_provider.train_iterator.get_next_batch(sess=self.sess)
-	    #print(batch_train_prototype.shape)
-	    #print(batch+train_reference.shape)
-
             optimization_start = time.time()
 
             if dis_vars_train \
@@ -1615,7 +1608,7 @@ class SnGac(object):
 
             if self.training_mode == 'GeneratorInit' or \
                     ((self.training_mode=='DiscriminatorFineTune' or self.training_mode=='DiscriminatorReTrain')
-                     and current_test_accuracy > self.highest_test_accuracy):
+                     and (current_test_accuracy > self.highest_test_accuracy or ei < self.init_training_epochs + DISCRIMINATOR_TRAIN_INIT_EPOCH)):
                 current_time = time.strftime('%Y-%m-%d @ %H:%M:%S', time.localtime())
                 print("Time:%s,Checkpoint:SaveCheckpoint@step:%d" % (current_time, global_step.eval(session=self.sess)))
                 self.checkpoint(saver=saver_discriminator,
@@ -1630,8 +1623,7 @@ class SnGac(object):
                 print(self.print_separater)
 
                 if (current_test_accuracy > self.highest_test_accuracy
-                    and (ei > self.init_training_epochs + 3
-                         or (self.training_mode == 'DiscriminatorFineTune' or self.training_mode == 'DiscriminatorReTrain'))) \
+                    and (ei > self.init_training_epochs + DISCRIMINATOR_TRAIN_INIT_EPOCH or (self.training_mode == 'DiscriminatorFineTune' or self.training_mode == 'DiscriminatorReTrain'))) \
                         or self.debug_mode == 1:
                     self.highest_test_accuracy = current_test_accuracy
                     self.highest_test_accuracy_epoch = ei

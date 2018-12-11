@@ -14,7 +14,7 @@ eps = 1e-9
 
 
 
-data_path_root = '/Data_SSD/Harric/ChineseCharacterExp/'
+data_path_root = '/DataA/Harric/ChineseCharacterExp/'
 model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 # exp_root_path = '/Users/harric/Data/'
 
@@ -27,8 +27,8 @@ model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 # training_mode = 'GeneratorInit';
 #                 'DiscriminatorFineTune';
 #                 'DiscriminatorReTrain';
-input_args = ['--training_from_model_dir',
-              '/Data_HDD/Harric/ChineseCharacterExp/tfModels_SNGAC/checkpoint/Exp20180918_SNGAC_StyleHw100-GeneratorInit-GenEncDec6-Res5@Lyr3_DisMdy6conv/',
+input_args = [#'--training_from_model_dir',
+              #'/Data_HDD/Harric/ChineseCharacterExp/tfModels_SNGAC/checkpoint/Exp20180918_SNGAC_StyleHw100-GeneratorInit-GenEncDec6-Res5@Lyr3_DisMdy6conv/',
 
               '--debug_mode','0',
               '--training_mode','DiscriminatorFineTune',
@@ -78,7 +78,7 @@ input_args = ['--training_from_model_dir',
               # optimizer parameters
               '--init_lr','0.0005',
               '--epoch','3000',
-              '--resume_training','0', # 0: training from scratch; 1: training from a pre-trained point
+              '--resume_training','1', # 0: training from scratch; 1: training from a pre-trained point
 
               '--optimization_method','adam',
               '--final_learning_rate_pctg','0.01',

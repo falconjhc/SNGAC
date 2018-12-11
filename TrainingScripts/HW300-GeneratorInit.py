@@ -14,7 +14,7 @@ eps = 1e-9
 
 
 
-data_path_root = '/Data_SSD/Harric/ChineseCharacterExp/'
+data_path_root = '/DataA/Harric/ChineseCharacterExp/'
 model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 # exp_root_path = '/Users/harric/Data/'
 
@@ -29,7 +29,7 @@ model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 input_args = [
               '--debug_mode','0',
               '--training_mode','GeneratorInit',
-              '--init_training_epochs','3',
+              '--init_training_epochs','1',
               '--final_training_epochs','400',
 
               '--generator_device','/device:GPU:0',
