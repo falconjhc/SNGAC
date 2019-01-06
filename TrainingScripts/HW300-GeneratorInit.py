@@ -14,7 +14,7 @@ eps = 1e-9
 
 
 
-data_path_root = '/DataA/Harric/ChineseCharacterExp/'
+data_path_root = '/Data_SSD/Harric/ChineseCharacterExp/'
 model_log_path_root = '/Data_HDD/Harric/ChineseCharacterExp/'
 # exp_root_path = '/Users/harric/Data/'
 
@@ -91,7 +91,7 @@ input_args = [
 
               # feature extractor parametrers
               '--style_embedder_dir',
-    'TrainedModel_CNN/ContentStyleBoth/Exp20180802_FeatureExtractor_StyleContent_HW300_vgg16net/variables/',
+    'TrainedModel_CNN_WithAugment/ContentStyleBoth/Exp20181017_FeatureExtractor_ContentStyle_HW300_vgg16net/variables/',
               ]
 
 
